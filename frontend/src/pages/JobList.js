@@ -9,9 +9,11 @@ function JobList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const jobsPerPage = 2;
+  const jobsPerPage = 3;
 
-  useEffect(() => {
+  const fetchJobs = () => {
+    setLoading(true);
+
     fetch("http://localhost:5000/jobs")
       .then((res) => {
         if (!res.ok) {
@@ -28,9 +30,12 @@ function JobList() {
         setError("Unable to load jobs");
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchJobs();
   }, []);
 
-  // Reset to first page when search changes
   useEffect(() => {
     setPage(1);
   }, [searchTerm]);
@@ -38,7 +43,8 @@ function JobList() {
   const filteredJobs = jobs.filter(
     (job) =>
       job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchTerm.toLowerCase())
+      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
@@ -50,7 +56,7 @@ function JobList() {
   );
 
   if (loading) {
-    return <h2>Loading jobs...</h2>;
+    return <h2>Loading Jobs...</h2>;
   }
 
   if (error) {
@@ -59,7 +65,13 @@ function JobList() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Job Listings</h1>
+      <h1 style={{ color: "#007bff" }}>
+        Job Portal
+      </h1>
+
+      <p>
+        Available Jobs: <strong>{filteredJobs.length}</strong>
+      </p>
 
       <SearchBar
         searchTerm={searchTerm}
@@ -67,6 +79,21 @@ function JobList() {
       />
 
       <br />
+
+      <button
+        onClick={fetchJobs}
+        style={{
+          padding: "8px 15px",
+          backgroundColor: "#28a745",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          marginBottom: "20px",
+        }}
+      >
+        Refresh Jobs
+      </button>
 
       {filteredJobs.length === 0 ? (
         <h3>No jobs found.</h3>
@@ -80,17 +107,22 @@ function JobList() {
 
           <div
             style={{
-              marginTop: "20px",
+              marginTop: "25px",
               display: "flex",
+              justifyContent: "center",
               alignItems: "center",
-              gap: "10px",
+              gap: "15px",
             }}
           >
             <button
               disabled={page === 1}
               onClick={() => setPage(page - 1)}
               style={{
-                padding: "8px 12px",
+                padding: "8px 15px",
+                backgroundColor: "#007bff",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
                 cursor: page === 1 ? "not-allowed" : "pointer",
               }}
             >
@@ -98,16 +130,23 @@ function JobList() {
             </button>
 
             <span>
-              Page {page} of {totalPages}
+              Page <strong>{page}</strong> of{" "}
+              <strong>{totalPages}</strong>
             </span>
 
             <button
               disabled={page === totalPages}
               onClick={() => setPage(page + 1)}
               style={{
-                padding: "8px 12px",
+                padding: "8px 15px",
+                backgroundColor: "#007bff",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
                 cursor:
-                  page === totalPages ? "not-allowed" : "pointer",
+                  page === totalPages
+                    ? "not-allowed"
+                    : "pointer",
               }}
             >
               Next
