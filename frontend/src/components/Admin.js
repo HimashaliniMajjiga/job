@@ -13,6 +13,7 @@ function Admin() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
 
   const handleChange = (e) => {
     setJob({
@@ -40,7 +41,7 @@ function Admin() {
         throw new Error("Failed to add job");
       }
 
-      alert("Job added successfully");
+      alert("Job added successfully!");
 
       setJob({
         title: "",
@@ -58,6 +59,34 @@ function Admin() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!deleteId) {
+      alert("Enter Job ID");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/jobs/${deleteId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: "my-secret-token",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete job");
+      }
+
+      alert("Job deleted successfully!");
+      setDeleteId("");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   return (
     <div style={{ padding: "20px" }}>
       <h2>Add New Job</h2>
@@ -70,6 +99,7 @@ function Admin() {
           onChange={handleChange}
         />
         <br />
+        <br />
 
         <input
           name="company"
@@ -77,6 +107,7 @@ function Admin() {
           value={job.company}
           onChange={handleChange}
         />
+        <br />
         <br />
 
         <input
@@ -86,6 +117,7 @@ function Admin() {
           onChange={handleChange}
         />
         <br />
+        <br />
 
         <input
           name="salary"
@@ -93,6 +125,7 @@ function Admin() {
           value={job.salary}
           onChange={handleChange}
         />
+        <br />
         <br />
 
         <select
@@ -107,6 +140,7 @@ function Admin() {
         </select>
 
         <br />
+        <br />
 
         <textarea
           name="description"
@@ -115,6 +149,7 @@ function Admin() {
           onChange={handleChange}
         />
 
+        <br />
         <br />
 
         <input
@@ -125,11 +160,40 @@ function Admin() {
         />
 
         <br />
+        <br />
 
-        <button type="submit" disabled={loading}>
+        <button
+          type="submit"
+          disabled={loading}
+        >
           {loading ? "Submitting..." : "Add Job"}
         </button>
       </form>
+
+      <hr style={{ margin: "30px 0" }} />
+
+      <h2>Delete Job</h2>
+
+      <input
+        type="text"
+        placeholder="Enter Job ID"
+        value={deleteId}
+        onChange={(e) => setDeleteId(e.target.value)}
+      />
+
+      <button
+        onClick={handleDelete}
+        style={{
+          marginLeft: "10px",
+          backgroundColor: "red",
+          color: "white",
+          border: "none",
+          padding: "8px 12px",
+          cursor: "pointer",
+        }}
+      >
+        Delete Job
+      </button>
     </div>
   );
 }

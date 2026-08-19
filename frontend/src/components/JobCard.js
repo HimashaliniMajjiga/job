@@ -64,3 +64,4 @@ const styles = {
 };
 
 export default JobCard;
+//this is a job card component that displays job details and provides a link to apply for the job.
