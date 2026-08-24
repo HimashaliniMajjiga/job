@@ -10,4 +10,11 @@ export async function rollbackRelease() {
   return fetch(`${API_BASE}/rollback`, {
     method: "POST",
   });
+  export async function emergencyRollback() {
+16
+return fetch
+  }(`${API_BASE}/emergency-rollback`, {
+    method: "POST",
+  });       
+  
 }
