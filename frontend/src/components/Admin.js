@@ -14,7 +14,19 @@ function Admin() {
 
   const [loading, setLoading] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-
+    const bulkUploadJobs = async () => {
+  await fetch(`${API_BASE}/jobs/bulk`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "my-secret-token",
+    },
+    body: JSON.stringify(sampleJobs),
+  });
+};
+<button onClick={bulkUploadJobs}>
+  Bulk Upload Jobs
+</button>
   const handleChange = (e) => {
     setJob({
       ...job,
@@ -118,6 +130,10 @@ function Admin() {
         />
         <br />
         <br />
+        <Route
+ path="/admin-reports"
+ element={<AdminReports />}
+/>
 
         <input
           name="salary"

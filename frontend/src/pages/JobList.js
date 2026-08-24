@@ -40,13 +40,13 @@ function JobList() {
     setPage(1);
   }, [searchTerm]);
 
-  const filteredJobs = jobs.filter(
-    (job) =>
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.location.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+ const filteredJobs = jobs.filter((job) =>
+  job.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  job.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  job.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  job.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  job.salary?.toLowerCase().includes(searchTerm.toLowerCase())
+);
   const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
 
   const startIndex = (page - 1) * jobsPerPage;
