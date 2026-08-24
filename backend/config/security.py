@@ -4,4 +4,6 @@ SECURITY_CONFIG = {
     "enable_user_management": True,
     "require_mfa": True,
     "enable_audit_logging": True,
+        "audit_logging": True,
+
 }

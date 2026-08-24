@@ -30,6 +30,7 @@ router.post("/", authMiddleware, async (req, res) => {
     const { title, company, location, description, apply_link } = req.body;
     const [result] = await pool.query(
       "INSERT INTO jobs (title, company, location, description, apply_link) VALUES (?, ?, ?, ?, ?)",
+      "INSERT INTO jobs (title, company, location, description, apply_link) VALUES (?, ?, ?, ?, ?)",
       [title, company, location, description, apply_link]
     );
     res.json({ id: result.insertId, title, company, location, description, apply_link });
